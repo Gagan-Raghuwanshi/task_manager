@@ -6,10 +6,12 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Login({ setIsAuthenticated }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const { data } = await api.post("/auth/login", { email, password });
       localStorage.setItem("token", data.token);
@@ -18,6 +20,8 @@ export default function Login({ setIsAuthenticated }) {
       navigate("/");
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,9 +66,12 @@ export default function Login({ setIsAuthenticated }) {
 
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded font-medium hover:bg-blue-700 transition"
+                disabled={loading}
+                className={`w-full py-2 rounded font-medium transition text-white ${
+                  loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                }`}
               >
-                Login
+                {loading ? "Logging in..." : "Login"}
               </button>
             </form>
 

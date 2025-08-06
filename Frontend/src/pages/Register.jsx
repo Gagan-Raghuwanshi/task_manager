@@ -7,22 +7,25 @@ export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       await api.post("/auth/register", { name, email, password });
       toast.success("Registration successful");
       navigate("/login");
     } catch (err) {
       toast.error(err.response?.data?.message || "Registration failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-
       <div className="bg-white shadow-xl rounded-xl overflow-hidden w-full max-w-4xl md:flex">
         <div className="hidden md:flex items-center justify-center bg-blue-600 text-white w-1/2 p-10">
           <div className="text-center">
@@ -73,9 +76,12 @@ export default function Register() {
 
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded font-medium hover:bg-blue-700 transition"
+                disabled={loading}
+                className={`w-full py-2 rounded font-medium transition text-white ${
+                  loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                }`}
               >
-                Register
+                {loading ? "Registering..." : "Register"}
               </button>
             </form>
 

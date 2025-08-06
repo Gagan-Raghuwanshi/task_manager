@@ -14,7 +14,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Welcome to the Task Manager API");
+  return res.send("Welcome to the Task Manager API");
 });
 
 const PORT = process.env.PORT || 5000;

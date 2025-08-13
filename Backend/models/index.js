@@ -9,13 +9,16 @@ const sequelize = new Sequelize(
   process.env.DB_PASSWORD,
   {
     host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
     dialect: "mysql",
+    logging: false,
   }
 );
 
 const db = {};
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
 db.User = require("./User")(sequelize, Sequelize);
 db.Task = require("./Task")(sequelize, Sequelize);
 

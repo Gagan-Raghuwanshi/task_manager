@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
     await User.create({ name, email, password: hashedPassword });
     return res.status(201).json({ message: "User registered" });
   } catch (err) {
-    return res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error" + err.message });
   }
 };
 
@@ -33,6 +33,6 @@ exports.login = async (req, res) => {
 
     return res.json({ token });
   } catch (err) {
-    return res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error" + err.message });
   }
 };
